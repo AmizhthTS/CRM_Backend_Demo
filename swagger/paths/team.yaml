@@ -1,0 +1,9 @@
+paths:
+  /api/teams/list:
+    get:
+      tags:
+        - Teams
+      summary: List all teams
+      responses:
+        200:
+          description: List of teams

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background: #f9f9f9; border-radius: 8px; }
+    .footer { margin-top: 20px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="header"><h1>{{title}}</h1></div>
+  <div class="content">
+    {{{body}}}
+    {{#if images}}
+      {{#each images}}
+        <div style="margin: 20px 0;"><img src="{{this.url}}" alt="{{this.alt}}" style="max-width: 100%; height: auto; border-radius: 8px;"/></div>
+      {{/each}}
+    {{/if}}
+  </div>
+  <div class="footer">
+    <p>If you want to unsubscribe, {{unsubscribeUrl}}</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "requests": true,
+  "responses": true,
+  "errors": true,
+  "auth": true,
+  "database": true,
+  "swagger": true,
+  "headers": true
+}

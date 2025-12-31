@@ -1,0 +1,596 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: User ID
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          description: User's full name
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "john.doe@example.com"
+        role:
+          type: string
+          enum: [user, admin]
+          description: User role
+          example: "user"
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+      required:
+        - name
+        - email
+        - password
+
+    UserRegistration:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        password:
+          type: string
+          minLength: 6
+          example: "password123"
+      required:
+        - name
+        - email
+        - password
+
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        password:
+          type: string
+          example: "password123"
+      required:
+        - email
+        - password
+
+    ChangePassword:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          example: "oldPassword123"
+        newPassword:
+          type: string
+          minLength: 6
+          example: "newPassword123"
+      required:
+        - currentPassword
+        - newPassword
+
+    Photo:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439020"
+        url:
+          type: string
+          example: "https://example.com/image1.jpg"
+        name:
+          type: string
+          example: "baby-tshirt-blue.jpg"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          example: "Baby Romper"
+        description:
+          type: string
+          example: "Comfortable cotton romper for babies"
+        price:
+          type: number
+          example: 29.99
+        additional:
+          type: object
+          properties:
+            moreDescription:
+              type: string
+              example: "Additional description for product"
+            info:
+              type: string
+              example: "Extra info"
+        category:
+          type: string
+          example: "507f1f77bcf86cd799439012"
+        photoList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Photo"
+        ageGroupSize:
+          type: array
+          items:
+            type: object
+            properties:
+              wholesaleId:
+                type: string
+                example: "WHL-TS-001"
+              ageSizeMeta:
+                type: string
+                example: "507f1f77bcf86cd799439013"
+              colours:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    colourMeta:
+                      type: string
+                      example: "507f1f77bcf86cd799439014"
+                    photoList:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Photo"
+                    stock:
+                      type: number
+                      example: 100
+        status:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Baby Romper"
+        description:
+          type: string
+          example: "Comfortable cotton romper for babies"
+        price:
+          type: number
+          example: 29.99
+        category:
+          type: string
+          example: "507f1f77bcf86cd799439012"
+        photoList:
+          type: array
+          items:
+            type: string
+            description: "Photo ID or URL"
+        additional:
+          type: object
+          properties:
+            moreDescription:
+              type: string
+            info:
+              type: string
+        ageGroupSize:
+          type: array
+          items:
+            type: object
+            properties:
+              wholesaleId:
+                type: string
+              ageSizeMeta:
+                type: string
+              colours:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    colourMeta:
+                      type: string
+                    photoList:
+                      type: array
+                      items:
+                        type: string
+                    stock:
+                      type: number
+        status:
+          type: boolean
+          example: true
+      required:
+        - name
+        - price
+        - category
+
+    Category:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439012"
+        name:
+          type: string
+          example: "Rompers"
+        description:
+          type: string
+          example: "Baby rompers collection"
+        slug:
+          type: string
+          example: "rompers"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Color:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439014"
+        name:
+          type: string
+          example: "Blue"
+        colorCode:
+          type: string
+          example: "#0000FF"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    AgeGroup:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439013"
+        name:
+          type: string
+          example: "0-6 months"
+        fromAge:
+          type: number
+          example: 0
+        toAge:
+          type: number
+          example: 6
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Testimonial:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439015"
+        name:
+          type: string
+          example: "Jane Smith"
+        message:
+          type: string
+          example: "Great quality products!"
+        rating:
+          type: number
+          minimum: 1
+          maximum: 5
+          example: 5
+        isApproved:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TestimonialInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Jane Smith"
+        message:
+          type: string
+          example: "Great quality products!"
+        rating:
+          type: number
+          minimum: 1
+          maximum: 5
+          example: 5
+      required:
+        - name
+        - message
+        - rating
+
+    Blog:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439016"
+        title:
+          type: string
+          example: "How to Choose Baby Clothes"
+        content:
+          type: string
+          example: "Detailed guide on choosing the right clothes..."
+        author:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        slug:
+          type: string
+          example: "how-to-choose-baby-clothes"
+        excerpt:
+          type: string
+          example: "Quick tips for new parents"
+        featuredImage:
+          type: string
+          example: "https://example.com/blog-image.jpg"
+        isPublished:
+          type: boolean
+          example: true
+        publishedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BlogInput:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "How to Choose Baby Clothes"
+        content:
+          type: string
+          example: "Detailed guide on choosing the right clothes..."
+        excerpt:
+          type: string
+          example: "Quick tips for new parents"
+        featuredImage:
+          type: string
+          example: "https://example.com/blog-image.jpg"
+      required:
+        - title
+        - content
+
+    UserMeta:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439017"
+        userId:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        phone:
+          type: string
+          example: "+1234567890"
+        message:
+          type: string
+          example: "I would like to inquire about wholesale pricing"
+        createdAt:
+          type: string
+          format: date-time
+
+    SuccessResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            responseStatus:
+              type: integer
+              example: 200
+            responseMessage:
+              type: string
+              example: "Success"
+            responseData:
+              type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            responseStatus:
+              type: integer
+              example: 400
+            responseMessage:
+              type: string
+              example: "Error message"
+            responseData:
+              type: object
+              nullable: true
+
+    Newsletter:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 674576a1b2c3d4e5f6a7b8c9
+        subject:
+          type: string
+          example: Monthly Update - November 2025
+        content:
+          type: string
+          example: Plain text content of the newsletter
+        htmlContent:
+          type: string
+          example: <h1>Welcome</h1><p>HTML content here</p>
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                example: https://utfs.io/f/image123.jpg
+              alt:
+                type: string
+                example: Product image
+              position:
+                type: string
+                example: header
+        scheduledAt:
+          type: string
+          format: date-time
+          example: 2025-11-25T10:00:00.000Z
+        sentAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: 2025-11-25T12:00:00.000Z
+        status:
+          type: string
+          enum: [draft, scheduled, sent]
+          example: draft
+        createdBy:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: 674576a1b2c3d4e5f6a7b8c8
+            name:
+              type: string
+              example: Admin Name
+            email:
+              type: string
+              example: admin@example.com
+        recipientCount:
+          type: integer
+          example: 0
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-11-25T10:00:00.000Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-11-25T10:00:00.000Z
+
+    NewsletterSubscription:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 674576a1b2c3d4e5f6a7b8c7
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-11-20T10:00:00.000Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2025-11-20T10:00:00.000Z
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 25
+        pages:
+          type: integer
+          example: 3
+
+    CartItem:
+      type: object
+      properties:
+        product:
+          $ref: "#/components/schemas/Product"
+        sku:
+          type: string
+          example: "SKU-123"
+        quantity:
+          type: integer
+          example: 2
+        price:
+          type: number
+          example: 29.99
+        color:
+          type: string
+          example: "Blue"
+        size:
+          type: string
+          example: "M"
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d5ecb8b5c9c62b3c7c4b5a"
+        user:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        totalQuantity:
+          type: integer
+          example: 2
+        totalPrice:
+          type: number
+          example: 59.98
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

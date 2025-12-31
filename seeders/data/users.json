@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Admin User",
+    "email": "admin@justborn.com",
+    "password": "Admin@123",
+    "role": "admin"
+  },
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "User@123",
+    "role": "user"
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "password": "User@123",
+    "role": "user"
+  },
+  {
+    "name": "Wholesaler One",
+    "email": "wholesale1@example.com",
+    "password": "Wholesale@123",
+    "role": "wholesalerUser"
+  },
+  {
+    "name": "Wholesaler Two",
+    "email": "wholesale2@example.com",
+    "password": "Wholesale@123",
+    "role": "wholesalerUser"
+  },
+  {
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "password": "User@123",
+    "role": "user"
+  },
+  {
+    "name": "Bob Williams",
+    "email": "bob.williams@example.com",
+    "password": "User@123",
+    "role": "user"
+  }
+]

@@ -1,0 +1,139 @@
+/api/upload/admin/upload-images:
+  post:
+    tags:
+      - Uploads
+    summary: Upload image to cloud storage (Admin Only)
+    description: Upload a single image file to UploadThing cloud storage. Returns the cloud URL and file metadata. Admin authentication required.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - image
+            properties:
+              image:
+                type: string
+                format: binary
+                description: Image file to upload (JPG, PNG, GIF, etc.)
+          examples:
+            productImage:
+              summary: Upload product image
+              value:
+                image: (binary file data)
+    responses:
+      200:
+        description: Image uploaded successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Image uploaded successfully"
+                data:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      example: "https://utfs.io/f/0yiAj0ZutaRBuV45ykaUOwQC4hueEmHKjZYany0NdgpkWcqT"
+                      description: Public URL of the uploaded image
+                    fileKey:
+                      type: string
+                      example: "0yiAj0ZutaRBuV45ykaUOwQC4hueEmHKjZYany0NdgpkWcqT"
+                      description: Unique file key for future operations (e.g., deletion)
+                    fileName:
+                      type: string
+                      example: "product-image.png"
+                      description: Original or processed file name
+            examples:
+              success:
+                summary: Successful upload
+                value:
+                  success: true
+                  message: "Image uploaded successfully"
+                  data:
+                    url: "https://utfs.io/f/abc123xyz"
+                    fileKey: "abc123xyz"
+                    fileName: "product-image.png"
+      400:
+        description: Bad request - No image provided
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "No image file provided"
+            examples:
+              noFile:
+                summary: No file in request
+                value:
+                  success: false
+                  message: "No image file provided"
+      401:
+        description: Unauthorized - Missing or invalid token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "No token provided"
+      403:
+        description: Forbidden - User is not admin
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "Access denied. Admin only."
+            examples:
+              notAdmin:
+                summary: Non-admin user attempt
+                value:
+                  success: false
+                  message: "Access denied. Admin only."
+      500:
+        description: Internal server error - Upload failed
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "Image upload failed"
+                error:
+                  type: string
+                  example: "Upload service unavailable"
+            examples:
+              uploadError:
+                summary: Upload service error
+                value:
+                  success: false
+                  message: "Image upload failed"
+                  error: "UPLOADTHING_TOKEN not configured in environment variables"

@@ -1,0 +1,69 @@
+paths:
+  # =====================================================
+  # DASHBOARD ROUTES
+  # =====================================================
+  /api/dashboard/products:
+    get:
+      tags:
+        - Dashboard
+      summary: Get product dashboard statistics
+      description: Retrieve product-related statistics and analytics (admin only)
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: Dashboard statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: object
+                    properties:
+                      responseStatus:
+                        type: integer
+                        example: 200
+                      responseMessage:
+                        type: string
+                        example: "Dashboard statistics retrieved successfully"
+                      responseData:
+                        type: object
+                        properties:
+                          totalProducts:
+                            type: integer
+                            example: 150
+                          activeProducts:
+                            type: integer
+                            example: 120
+                          inactiveProducts:
+                            type: integer
+                            example: 30
+                          lowStockProducts:
+                            type: integer
+                            example: 15
+                          totalCategories:
+                            type: integer
+                            example: 8
+                          totalColors:
+                            type: integer
+                            example: 12
+                          totalAgeGroups:
+                            type: integer
+                            example: 5
+                          recentProducts:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden - admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
