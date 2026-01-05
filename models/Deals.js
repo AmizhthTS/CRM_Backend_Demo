@@ -104,6 +104,13 @@ const dealsSchema = new Schema(
         message: {
           type: String,
         },
+        updatedBy: {
+          type: Schema.Types.ObjectId,
+          ref: "Users",
+        },
+        updatedByName: {
+          type: String,
+        },
       },
     ],
   },

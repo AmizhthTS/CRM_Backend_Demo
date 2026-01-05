@@ -44,7 +44,11 @@ export const leadsList = async (req, res) => {
         },
       });
     }
+    console.log("userid", req.user);
     const query = buildLeadsQuery({ search });
+    if (req.user.role !== "admin") {
+      query.teamId = req.user.userId;
+    }
     if (status !== "all") {
       query.status = status;
     }

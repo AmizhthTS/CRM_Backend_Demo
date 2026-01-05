@@ -43,8 +43,8 @@ const companySchema = new Schema(
       type: String,
       required: true,
     },
-    contactCountry: {
-      type: String,
+    contactCount: {
+      type: Number,
       required: false,
     },
   },

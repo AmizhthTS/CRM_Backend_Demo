@@ -42,6 +42,7 @@ export const createDeal = async (req, res) => {
         stage: stage,
         stageDate: new Date(),
         message: config.message,
+        updatedBy: req.user._id,
       });
     }
 
@@ -75,6 +76,9 @@ export const dealsList = async (req, res) => {
       });
     }
     const query = buildDealsQuery({ search });
+    if (req.user.role !== "admin") {
+      query.teamId = req.user.userId;
+    }
     const skip = (pageNum - 1) * limitNum;
 
     const total = await Deals.countDocuments(query);
@@ -137,6 +141,7 @@ export const dealsList = async (req, res) => {
 export const getDealById = async (req, res) => {
   try {
     const deal = await Deals.findById(req.params.id);
+    // teamId
     if (deal.teamId) {
       let teamData = await Team.findById(deal.teamId).lean();
       if (teamData) {
@@ -144,6 +149,7 @@ export const getDealById = async (req, res) => {
         deal.teamImage = teamData.image;
       }
     }
+    // assignBy
     if (deal.assignBy) {
       let userData = await Team.findById(deal.assignBy).lean();
       if (userData) {
@@ -169,6 +175,15 @@ export const getDealById = async (req, res) => {
             deal.companyName = companyData.companyName;
             deal.companyId = companyData._id;
           }
+        }
+      }
+    }
+    // stageHistory
+    if (deal.stageHistory) {
+      for (const stage of deal.stageHistory) {
+        let userData = await Team.findById(stage.updatedBy).lean();
+        if (userData) {
+          stage.updatedByName = userData.name;
         }
       }
     }
@@ -221,6 +236,8 @@ export const updateDeal = async (req, res) => {
 export const updateDealStage = async (req, res) => {
   try {
     const { _id, stage } = req.body;
+    console.log("userid", req.user.userId);
+
     let probability;
     let message;
     if (stage === "lead") {
@@ -257,6 +274,7 @@ export const updateDealStage = async (req, res) => {
       stage,
       stageDate: Date.now(),
       message: message,
+      updatedBy: req.user.userId,
     });
     await deal.save();
     return res.json({

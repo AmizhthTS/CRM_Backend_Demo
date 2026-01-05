@@ -1,4 +1,5 @@
 import { Company } from "../models/Company.js";
+import { Contact } from "../models/Contacts.js";
 const buildCompanyQuery = (filters) => {
   const query = {};
 
@@ -46,16 +47,24 @@ export const companyList = async (req, res) => {
 
     const total = await Company.countDocuments(query);
 
-    const company = await Company.find(query).limit(limitNum).skip(skip).lean();
-    company.forEach((company) => {
+    const companyList = await Company.find(query)
+      .limit(limitNum)
+      .skip(skip)
+      .lean();
+    for (const company of companyList) {
       company.createdAt = company.createdAt.toISOString().split("T")[0];
-    });
+      // get company count from contact collection
+      const contactCount = await Contact.countDocuments({
+        companyId: company._id,
+      });
+      company.contactCount = contactCount;
+    }
     return res.json({
       response: {
         responseStatus: 200,
         responseMessage: "Company fetched successfully",
       },
-      company,
+      companyList,
       pagination: {
         total,
         page: pageNum,

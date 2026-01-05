@@ -21,6 +21,7 @@ import componyRoute from "./routes/componyRoutes.js";
 import contactRoute from "./routes/contactRoutes.js";
 import dealsRoute from "./routes/dealsRoute.js";
 import taskRoute from "./routes/taskRoute.js";
+import dashboardRoute from "./routes/dashboardRoutes.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -94,6 +95,7 @@ app.use("/api/companies", componyRoute);
 app.use("/api/contacts", contactRoute);
 app.use("/api/deals", dealsRoute);
 app.use("/api/tasks", taskRoute);
+app.use("/api/dashboard", dashboardRoute);
 // FRONTEND ROUTE
 app.get("/", (req, res) => {
   return res.status(200).sendFile(path.resolve("./static/index.html"));

@@ -43,6 +43,9 @@ export const tasksList = async (req, res) => {
       });
     }
     const query = buildTaskQuery({ search });
+    if (req.user.role !== "admin") {
+      query.assignTo = req.user.userId;
+    }
     if (status !== "all") {
       query.status = status;
     }
